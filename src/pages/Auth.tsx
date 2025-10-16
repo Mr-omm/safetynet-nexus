@@ -36,7 +36,7 @@ const Auth = () => {
             <Shield className="w-10 h-10 text-primary-foreground" />
           </div>
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Safety Management System
+            SafeNet
           </CardTitle>
           <CardDescription className="text-base">
             Enter your credentials to access the system

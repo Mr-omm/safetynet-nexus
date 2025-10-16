@@ -99,7 +99,7 @@ const Home = () => {
               <Shield className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Safety Hub</h1>
+              <h1 className="text-2xl font-bold text-foreground">SafeNet</h1>
               <p className="text-sm text-muted-foreground">Employee: {employeeId}</p>
             </div>
           </div>
