@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Shield, Building2 } from "lucide-react";
 import { toast } from "sonner";
 
 const Auth = () => {
   const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
@@ -26,6 +29,20 @@ const Auth = () => {
       toast.success("Login successful!");
       navigate("/home");
     }
+  };
+
+  const handlePasswordReset = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!resetEmail) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    // Demo password reset - in production, this would send a reset email via backend
+    toast.success("Password reset link sent to your email!");
+    setIsResetDialogOpen(false);
+    setResetEmail("");
   };
 
   return (
@@ -78,6 +95,56 @@ const Auth = () => {
                 Sign In
               </span>
             </Button>
+
+            <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  type="button"
+                  variant="link"
+                  className="w-full text-sm text-primary hover:text-primary/80 animate-fade-in"
+                  style={{ animationDelay: '0.35s' }}
+                >
+                  Forgot Password?
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-primary" />
+                    Reset Password
+                  </DialogTitle>
+                  <DialogDescription>
+                    Enter your email address and we'll send you a link to reset your password.
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handlePasswordReset} className="space-y-4 pt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="reset-email">Email Address</Label>
+                    <Input
+                      id="reset-email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsResetDialogOpen(false)}
+                      className="flex-1"
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" className="flex-1">
+                      Send Reset Link
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
           </form>
           
           <div className="mt-8 pt-6 border-t border-primary/20 space-y-3 animate-fade-in" style={{ animationDelay: '0.4s' }}>
