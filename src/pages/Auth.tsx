@@ -12,6 +12,10 @@ const Auth = () => {
   const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
   const [resetEmail, setResetEmail] = useState("");
+  const [resetOtp, setResetOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [resetStep, setResetStep] = useState<"email" | "otp" | "password">("email");
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -34,15 +38,52 @@ const Auth = () => {
   const handlePasswordReset = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!resetEmail) {
-      toast.error("Please enter your email address");
-      return;
+    if (resetStep === "email") {
+      if (!resetEmail) {
+        toast.error("Please enter your email address");
+        return;
+      }
+      // Demo - in production, this would send OTP to email via backend
+      toast.success("OTP sent to your email!");
+      setResetStep("otp");
+    } else if (resetStep === "otp") {
+      if (!resetOtp || resetOtp.length !== 6) {
+        toast.error("Please enter a valid 6-digit OTP");
+        return;
+      }
+      // Demo - in production, this would verify OTP with backend
+      toast.success("OTP verified!");
+      setResetStep("password");
+    } else if (resetStep === "password") {
+      if (!newPassword || newPassword.length < 6) {
+        toast.error("Password must be at least 6 characters");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+      }
+      // Demo - in production, this would update password in backend
+      toast.success("Password reset successful!");
+      setIsResetDialogOpen(false);
+      setResetEmail("");
+      setResetOtp("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setResetStep("email");
     }
+  };
 
-    // Demo password reset - in production, this would send a reset email via backend
-    toast.success("Password reset link sent to your email!");
-    setIsResetDialogOpen(false);
-    setResetEmail("");
+  const handleResetDialogClose = (open: boolean) => {
+    setIsResetDialogOpen(open);
+    if (!open) {
+      // Reset all states when dialog closes
+      setResetEmail("");
+      setResetOtp("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setResetStep("email");
+    }
   };
 
   return (
@@ -96,7 +137,7 @@ const Auth = () => {
               </span>
             </Button>
 
-            <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+            <Dialog open={isResetDialogOpen} onOpenChange={handleResetDialogClose}>
               <DialogTrigger asChild>
                 <Button
                   type="button"
@@ -114,32 +155,84 @@ const Auth = () => {
                     Reset Password
                   </DialogTitle>
                   <DialogDescription>
-                    Enter your email address and we'll send you a link to reset your password.
+                    {resetStep === "email" && "Enter your email address and we'll send you an OTP to reset your password."}
+                    {resetStep === "otp" && "Enter the 6-digit OTP sent to your email."}
+                    {resetStep === "password" && "Create a new password for your account."}
                   </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handlePasswordReset} className="space-y-4 pt-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="reset-email">Email Address</Label>
-                    <Input
-                      id="reset-email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                      className="h-11"
-                    />
-                  </div>
+                  {resetStep === "email" && (
+                    <div className="space-y-2">
+                      <Label htmlFor="reset-email">Email Address</Label>
+                      <Input
+                        id="reset-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        className="h-11"
+                      />
+                    </div>
+                  )}
+
+                  {resetStep === "otp" && (
+                    <div className="space-y-2">
+                      <Label htmlFor="reset-otp">OTP Code</Label>
+                      <Input
+                        id="reset-otp"
+                        type="text"
+                        placeholder="Enter 6-digit OTP"
+                        value={resetOtp}
+                        onChange={(e) => setResetOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        maxLength={6}
+                        className="h-11 text-center text-xl tracking-widest"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        OTP sent to {resetEmail}
+                      </p>
+                    </div>
+                  )}
+
+                  {resetStep === "password" && (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="new-password">New Password</Label>
+                        <Input
+                          id="new-password"
+                          type="password"
+                          placeholder="Enter new password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="h-11"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="confirm-password">Confirm Password</Label>
+                        <Input
+                          id="confirm-password"
+                          type="password"
+                          placeholder="Confirm new password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          className="h-11"
+                        />
+                      </div>
+                    </>
+                  )}
+
                   <div className="flex gap-3">
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => setIsResetDialogOpen(false)}
+                      onClick={() => handleResetDialogClose(false)}
                       className="flex-1"
                     >
                       Cancel
                     </Button>
                     <Button type="submit" className="flex-1">
-                      Send Reset Link
+                      {resetStep === "email" && "Send OTP"}
+                      {resetStep === "otp" && "Verify OTP"}
+                      {resetStep === "password" && "Reset Password"}
                     </Button>
                   </div>
                 </form>
