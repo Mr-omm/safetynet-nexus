@@ -333,24 +333,6 @@ const Auth = () => {
               </DialogContent>
             </Dialog>
             )}
-            
-            <div className="mt-4 text-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => {
-                  setIsSignUp(!isSignUp);
-                  setEmployeeId("");
-                  setPassword("");
-                  setName("");
-                  setEmail("");
-                  setConfirmPasswordSignup("");
-                }}
-                className="text-sm"
-              >
-                {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
-              </Button>
-            </div>
           </form>
           
           <div className="mt-8 pt-6 border-t border-primary/20 space-y-3 animate-fade-in" style={{ animationDelay: '0.4s' }}>
