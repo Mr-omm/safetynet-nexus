@@ -9,8 +9,12 @@ import { Shield, Building2 } from "lucide-react";
 import { toast } from "sonner";
 
 const Auth = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
   const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPasswordSignup, setConfirmPasswordSignup] = useState("");
   const [resetEmail, setResetEmail] = useState("");
   const [resetOtp, setResetOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -33,6 +37,25 @@ const Auth = () => {
       toast.success("Login successful!");
       navigate("/home");
     }
+  };
+
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!name || !email || !employeeId || !password || !confirmPasswordSignup) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (password !== confirmPasswordSignup) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    // Demo signup - in production, this would create a user in the backend
+    localStorage.setItem("employeeId", employeeId);
+    toast.success("Account created successfully!");
+    navigate("/home");
   };
 
   const handlePasswordReset = (e: React.FormEvent) => {
@@ -104,12 +127,37 @@ const Auth = () => {
             SafeNet
           </CardTitle>
           <CardDescription className="text-base">
-            Enter your credentials to access the system
+            {isSignUp ? "Create your account" : "Enter your credentials to access the system"}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-6">
+            {isSignUp && (
+              <>
+                <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.05s' }}>
+                  <Label htmlFor="name" className="text-foreground font-medium">Full Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="Enter your full name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="h-12 border-2 border-primary/30 focus:border-primary transition-all duration-300 hover:border-primary/50 bg-background/50"
+                  />
+                </div>
+                <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  <Label htmlFor="email" className="text-foreground font-medium">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-12 border-2 border-primary/30 focus:border-primary transition-all duration-300 hover:border-primary/50 bg-background/50"
+                  />
+                </div>
+              </>
+            )}
+            <div className="space-y-2 animate-fade-in" style={{ animationDelay: isSignUp ? '0.15s' : '0.1s' }}>
               <Label htmlFor="employeeId" className="text-foreground font-medium">Employee ID</Label>
               <Input
                 id="employeeId"
@@ -119,7 +167,7 @@ const Auth = () => {
                 className="h-12 border-2 border-primary/30 focus:border-primary transition-all duration-300 hover:border-primary/50 bg-background/50"
               />
             </div>
-            <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <div className="space-y-2 animate-fade-in" style={{ animationDelay: isSignUp ? '0.2s' : '0.2s' }}>
               <Label htmlFor="password" className="text-foreground font-medium">Password</Label>
               <Input
                 id="password"
@@ -130,24 +178,38 @@ const Auth = () => {
                 className="h-12 border-2 border-primary/30 focus:border-primary transition-all duration-300 hover:border-primary/50 bg-background/50"
               />
             </div>
+            {isSignUp && (
+              <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.25s' }}>
+                <Label htmlFor="confirmPasswordSignup" className="text-foreground font-medium">Confirm Password</Label>
+                <Input
+                  id="confirmPasswordSignup"
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPasswordSignup}
+                  onChange={(e) => setConfirmPasswordSignup(e.target.value)}
+                  className="h-12 border-2 border-primary/30 focus:border-primary transition-all duration-300 hover:border-primary/50 bg-background/50"
+                />
+              </div>
+            )}
             <Button type="submit" className="w-full h-12 text-lg font-semibold animate-fade-in group relative overflow-hidden" style={{ animationDelay: '0.3s' }}>
               <span className="relative z-10 flex items-center justify-center gap-2">
                 <Shield className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                Sign In
+                {isSignUp ? "Sign Up" : "Sign In"}
               </span>
             </Button>
 
-            <Dialog open={isResetDialogOpen} onOpenChange={handleResetDialogClose}>
-              <DialogTrigger asChild>
-                <Button
-                  type="button"
-                  variant="link"
-                  className="w-full text-sm text-primary hover:text-primary/80 animate-fade-in"
-                  style={{ animationDelay: '0.35s' }}
-                >
-                  Forgot Password?
-                </Button>
-              </DialogTrigger>
+            {!isSignUp && (
+              <Dialog open={isResetDialogOpen} onOpenChange={handleResetDialogClose}>
+                <DialogTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="link"
+                    className="w-full text-sm text-primary hover:text-primary/80 animate-fade-in"
+                    style={{ animationDelay: '0.35s' }}
+                  >
+                    Forgot Password?
+                  </Button>
+                </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
@@ -238,6 +300,25 @@ const Auth = () => {
                 </form>
               </DialogContent>
             </Dialog>
+            )}
+            
+            <div className="mt-4 text-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  setIsSignUp(!isSignUp);
+                  setEmployeeId("");
+                  setPassword("");
+                  setName("");
+                  setEmail("");
+                  setConfirmPasswordSignup("");
+                }}
+                className="text-sm"
+              >
+                {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+              </Button>
+            </div>
           </form>
           
           <div className="mt-8 pt-6 border-t border-primary/20 space-y-3 animate-fade-in" style={{ animationDelay: '0.4s' }}>
