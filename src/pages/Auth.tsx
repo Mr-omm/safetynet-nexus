@@ -131,6 +131,38 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="flex gap-2 mb-6 p-1 bg-secondary/50 rounded-lg">
+            <Button
+              type="button"
+              variant={!isSignUp ? "default" : "ghost"}
+              className="flex-1"
+              onClick={() => {
+                setIsSignUp(false);
+                setEmployeeId("");
+                setPassword("");
+                setName("");
+                setEmail("");
+                setConfirmPasswordSignup("");
+              }}
+            >
+              Sign In
+            </Button>
+            <Button
+              type="button"
+              variant={isSignUp ? "default" : "ghost"}
+              className="flex-1"
+              onClick={() => {
+                setIsSignUp(true);
+                setEmployeeId("");
+                setPassword("");
+                setName("");
+                setEmail("");
+                setConfirmPasswordSignup("");
+              }}
+            >
+              Sign Up
+            </Button>
+          </div>
           <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-6">
             {isSignUp && (
               <>
