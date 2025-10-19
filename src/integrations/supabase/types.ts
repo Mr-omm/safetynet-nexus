@@ -14,16 +14,333 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      first_aid_cases: {
+        Row: {
+          created_at: string
+          employee_id: string
+          employee_name: string
+          first_aider_name: string
+          id: string
+          incident_date: string
+          injury_type: string
+          location: string
+          photo_url: string | null
+          remarks: string | null
+          treatment_given: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          employee_name: string
+          first_aider_name: string
+          id?: string
+          incident_date: string
+          injury_type: string
+          location: string
+          photo_url?: string | null
+          remarks?: string | null
+          treatment_given: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          employee_name?: string
+          first_aider_name?: string
+          id?: string
+          incident_date?: string
+          injury_type?: string
+          location?: string
+          photo_url?: string | null
+          remarks?: string | null
+          treatment_given?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      near_miss_incidents: {
+        Row: {
+          area_department: string
+          created_at: string
+          gps_coordinates: string | null
+          id: string
+          incident_description: string
+          location: string
+          photo_url: string | null
+          potential_consequence: string
+          preventive_action: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          area_department: string
+          created_at?: string
+          gps_coordinates?: string | null
+          id?: string
+          incident_description: string
+          location: string
+          photo_url?: string | null
+          potential_consequence: string
+          preventive_action: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          area_department?: string
+          created_at?: string
+          gps_coordinates?: string | null
+          id?: string
+          incident_description?: string
+          location?: string
+          photo_url?: string | null
+          potential_consequence?: string
+          preventive_action?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          department: string | null
+          designation: string | null
+          email: string | null
+          employee_id: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          designation?: string | null
+          email?: string | null
+          employee_id: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          designation?: string | null
+          email?: string | null
+          employee_id?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      safety_observations: {
+        Row: {
+          corrective_action: string | null
+          created_at: string
+          description: string
+          gps_coordinates: string | null
+          id: string
+          location: string
+          photo_url: string | null
+          severity: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          corrective_action?: string | null
+          created_at?: string
+          description: string
+          gps_coordinates?: string | null
+          id?: string
+          location: string
+          photo_url?: string | null
+          severity: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          corrective_action?: string | null
+          created_at?: string
+          description?: string
+          gps_coordinates?: string | null
+          id?: string
+          location?: string
+          photo_url?: string | null
+          severity?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sic_meetings: {
+        Row: {
+          action_points: string
+          created_at: string
+          id: string
+          meeting_date: string
+          next_meeting_date: string | null
+          participants: string[]
+          project_site: string
+          safety_issues: string
+          user_id: string
+        }
+        Insert: {
+          action_points: string
+          created_at?: string
+          id?: string
+          meeting_date: string
+          next_meeting_date?: string | null
+          participants: string[]
+          project_site: string
+          safety_issues: string
+          user_id: string
+        }
+        Update: {
+          action_points?: string
+          created_at?: string
+          id?: string
+          meeting_date?: string
+          next_meeting_date?: string | null
+          participants?: string[]
+          project_site?: string
+          safety_issues?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stop_work_orders: {
+        Row: {
+          corrective_action_verified: boolean | null
+          created_at: string
+          id: string
+          issued_by: string
+          photo_url: string | null
+          project_location: string
+          reason: string
+          received_by: string
+          resume_time: string | null
+          stop_time: string
+          unsafe_description: string
+          user_id: string
+        }
+        Insert: {
+          corrective_action_verified?: boolean | null
+          created_at?: string
+          id?: string
+          issued_by: string
+          photo_url?: string | null
+          project_location: string
+          reason: string
+          received_by: string
+          resume_time?: string | null
+          stop_time: string
+          unsafe_description: string
+          user_id: string
+        }
+        Update: {
+          corrective_action_verified?: boolean | null
+          created_at?: string
+          id?: string
+          issued_by?: string
+          photo_url?: string | null
+          project_location?: string
+          reason?: string
+          received_by?: string
+          resume_time?: string | null
+          stop_time?: string
+          unsafe_description?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      training_sessions: {
+        Row: {
+          attendance_photo_url: string | null
+          contractor_name: string | null
+          created_at: string
+          duration_end: string
+          duration_start: string
+          id: string
+          participants_count: number
+          topic_covered: string
+          trainer_name: string
+          training_type: string
+          user_id: string
+        }
+        Insert: {
+          attendance_photo_url?: string | null
+          contractor_name?: string | null
+          created_at?: string
+          duration_end: string
+          duration_start: string
+          id?: string
+          participants_count: number
+          topic_covered: string
+          trainer_name: string
+          training_type: string
+          user_id: string
+        }
+        Update: {
+          attendance_photo_url?: string | null
+          contractor_name?: string | null
+          created_at?: string
+          duration_end?: string
+          duration_start?: string
+          id?: string
+          participants_count?: number
+          topic_covered?: string
+          trainer_name?: string
+          training_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +467,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
