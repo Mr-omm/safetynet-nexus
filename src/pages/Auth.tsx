@@ -145,7 +145,7 @@ const Auth = () => {
                 setConfirmPasswordSignup("");
               }}
             >
-              Sign In
+              Login
             </Button>
             <Button
               type="button"
@@ -226,7 +226,7 @@ const Auth = () => {
             <Button type="submit" className="w-full h-12 text-lg font-semibold animate-fade-in group relative overflow-hidden" style={{ animationDelay: '0.3s' }}>
               <span className="relative z-10 flex items-center justify-center gap-2">
                 <Shield className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                {isSignUp ? "Sign Up" : "Sign In"}
+                {isSignUp ? "Sign Up" : "Login"}
               </span>
             </Button>
 
